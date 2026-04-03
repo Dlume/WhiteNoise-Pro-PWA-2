@@ -1,4 +1,4 @@
-// 音频管理器 - 支持后台播放
+// 音频管理�?- 支持后台播放
 class PWAAudioManager {
     constructor() {
         this.audioElements = {};
@@ -47,7 +47,7 @@ class PWAAudioManager {
         }
     }
 
-    // 停止所有音效
+    // 停止所有音�?
     stopAll() {
         Object.values(this.audioElements).forEach(audio => {
             audio.pause();
@@ -71,12 +71,12 @@ class PWAAudioManager {
         return audio ? audio.volume : 0.5;
     }
 
-    // 设置媒体会话（iOS 后台播放关键）
+    // 设置媒体会话（iOS 后台播放关键�?
     setupMediaSession() {
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: 'WhiteNoise Pro',
-                artist: '白噪音',
+                artist: '白噪�?,
                 album: '自然声音',
                 artwork: [
                     { src: '/icons/icon-192x192.png', sizes: '192x192' },
@@ -99,20 +99,20 @@ class PWAAudioManager {
         }
     }
 
-    // 初始化所有音效
+    // 初始化所有音�?
     initializeSounds() {
         const sounds = [
             { name: 'rain', file: 'rain.mp3', displayName: '雨声' },
             { name: 'ocean', file: 'ocean.mp3', displayName: '海浪' },
             { name: 'forest', file: 'forest.mp3', displayName: '森林' },
-            { name: 'cafe', file: 'cafe.mp3', displayName: '咖啡厅' },
+            { name: 'cafe', file: 'cafe.mp3', displayName: '咖啡�? },
             { name: 'thunder', file: 'thunder.mp3', displayName: '雷声' },
             { name: 'wind', file: 'wind.mp3', displayName: '风声' },
             { name: 'fireplace', file: 'fireplace.mp3', displayName: '篝火' }
         ];
 
         sounds.forEach(sound => {
-            this.createAudioElement(sound.name, `/sounds/${sound.file}`);
+            this.createAudioElement(sound.name, `sounds/${sound.file}`);
         });
 
         return sounds;
