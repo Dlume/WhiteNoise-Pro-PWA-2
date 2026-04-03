@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- iOS PWA 关键配置 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="WhiteNoise Pro">
+    
+    <!-- 防止缩放 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    
+    <title>WhiteNoise Pro</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- PWA 图标 -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
+</head>
+<body>
+    <div class="container">
+        <!-- 标签页导航 -->
+        <div class="tab-nav">
+            <button class="tab-button active" data-tab="sounds">声音</button>
+            <button class="tab-button" data-tab="focus">专注</button>
+            <button class="tab-button" data-tab="breathing">呼吸</button>
+        </div>
+
+        <!-- 白噪音内容 -->
+        <div class="tab-content active" id="sounds-tab">
+            <h1 style="color: white; text-align: center; margin-bottom: 20px;">白噪音</h1>
+            
+            <!-- 播放控制 -->
+            <div class="playback-controls">
+                <button class="control-btn play-btn" id="play-btn">▶</button>
+                <button class="control-btn stop-btn" id="stop-btn">■</button>
+            </div>
+            
+            <!-- 音效选择 -->
+            <div class="sound-grid" id="sound-grid">
+                <!-- 音效卡片将通过 JavaScript 动态生成 -->
+            </div>
+        </div>
+
+        <!-- 专注模式内容 -->
+        <div class="tab-content" id="focus-tab">
+            <h1 style="color: white; text-align: center; margin-bottom: 20px;">专注模式</h1>
+            
+            <div class="focus-display">
+                <div class="focus-time" id="focus-time">25:00</div>
+                <div class="focus-mode work-mode" id="focus-mode">工作时间</div>
+            </div>
+            
+            <div class="duration-selector">
+                <div class="duration-options">
+                    <button class="duration-btn active" data-duration="25">25分钟</button>
+                    <button class="duration-btn" data-duration="30">30分钟</button>
+                    <button class="duration-btn" data-duration="45">45分钟</button>
+                    <button class="duration-btn" data-duration="60">60分钟</button>
+                </div>
+            </div>
+            
+            <div class="focus-controls">
+                <button class="control-btn play-btn" id="focus-play">▶</button>
+                <button class="control-btn pause-btn" id="focus-pause">⏸</button>
+                <button class="control-btn stop-btn" id="focus-stop">■</button>
+            </div>
+            
+            <div style="text-align: center; color: white; margin-top: 20px;">
+                今日完成 <span id="sessions-completed">0</span> 个番茄钟
+            </div>
+        </div>
+
+        <!-- 呼吸练习内容 -->
+        <div class="tab-content" id="breathing-tab">
+            <h1 style="color: white; text-align: center; margin-bottom: 20px;">呼吸练习</h1>
+            
+            <div class="breathing-circle" id="breathing-circle"></div>
+            
+            <div class="breathing-phase" id="breathing-phase">吸气</div>
+            
+            <div class="breathing-controls" style="text-align: center; margin: 20px 0;">
+                <button class="control-btn play-btn" id="breathing-start">开始</button>
+                <button class="control-btn stop-btn" id="breathing-stop">停止</button>
+            </div>
+            
+            <div class="breathing-instructions">
+                4-7-8 呼吸法：吸气4秒，屏息7秒，呼气8秒
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="timer.js"></script>
+    <script>
+        // 主应用逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化音频管理器
+            const audioManager = new PWAAudioManager();
+            const sounds = audioManager.initializeSounds();
+            
+            // 初始化计时器
+            const focusTimer = new FocusTimer();
+            const breathingExercise = new BreathingExercise();
+            
+            // 当前选中的音效
+            let selectedSounds = [];
+            
+            // 生成音效网格
+            const soundGrid = document.getElementById('sound-grid');
+            sounds.forEach(sound => {
+                const card = document.createElement('div');
+                card.className = 'sound-card';
+                card.dataset.sound = sound.name;
+                card.innerHTML = `
+                    <div class="sound-icon">🌧️</div>
+                    <div class="sound-name">${sound.displayName}</div>
+                `;
+                card.addEventListener('click', () => {
+                    toggleSoundSelection(sound.name, card);
+                });
+                soundGrid.appendChild(card);
+            });
+            
+            // 切换音效选择
+            function toggleSoundSelection(soundName, card) {
+                const index = selectedSounds.indexOf(soundName);
+                if (index > -1) {
+                    selectedSounds.splice(index, 1);
+                    card.classList.remove('selected');
+                    audioManager.stopSound(soundName);
+                } else {
+                    selectedSounds.push(soundName);
+                    card.classList.add('selected');
+                    audioManager.playSound(soundName);
+                }
+                
+                // 更新播放按钮状态
+                updatePlayButton();
+            }
+            
+            // 更新播放按钮状态
+            function updatePlayButton() {
+                const playBtn = document.getElementById('play-btn');
+                if (selectedSounds.length > 0 && !audioManager.isPlaying) {
+                    playBtn.textContent = '▶';
+                    playBtn.style.background = '#4CAF50';
+                } else if (audioManager.isPlaying) {
+                    playBtn.textContent = '⏸';
+                    playBtn.style.background = '#FF9800';
+                }
+            }
+            
+            // 播放/暂停按钮
+            document.getElementById('play-btn').addEventListener('click', () => {
+                if (audioManager.isPlaying) {
+                    audioManager.stopAll();
+                    document.getElementById('play-btn').textContent = '▶';
+                    document.getElementById('play-btn').style.background = '#4CAF50';
+                    // 移除所有选中状态
+                    document.querySelectorAll('.sound-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    selectedSounds = [];
+                } else if (selectedSounds.length > 0) {
+                    selectedSounds.forEach(sound => {
+                        audioManager.playSound(sound);
+                    });
+                    document.getElementById('play-btn').textContent = '⏸';
+                    document.getElementById('play-btn').style.background = '#FF9800';
+                }
+            });
+            
+            // 停止按钮
+            document.getElementById('stop-btn').addEventListener('click', () => {
+                audioManager.stopAll();
+                document.getElementById('play-btn').textContent = '▶';
+                document.getElementById('play-btn').style.background = '#4CAF50';
+                selectedSounds = [];
+                document.querySelectorAll('.sound-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+            });
+            
+            // 标签页切换
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    // 移除所有激活状态
+                    document.querySelectorAll('.tab-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // 添加当前激活状态
+                    button.classList.add('active');
+                    const tabId = button.dataset.tab + '-tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // 专注模式控制
+            document.getElementById('focus-play').addEventListener('click', () => {
+                focusTimer.start();
+                updateFocusDisplay();
+            });
+            
+            document.getElementById('focus-pause').addEventListener('click', () => {
+                focusTimer.pause();
+            });
+            
+            document.getElementById('focus-stop').addEventListener('click', () => {
+                focusTimer.reset();
+                updateFocusDisplay();
+            });
+            
+            // 专注时长选择
+            document.querySelectorAll('.duration-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.duration-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    button.classList.add('active');
+                    const duration = parseInt(button.dataset.duration);
+                    focusTimer.setDuration(duration);
+                    focusTimer.reset();
+                    updateFocusDisplay();
+                });
+            });
+            
+            // 更新专注显示
+            function updateFocusDisplay() {
+                const timeElement = document.getElementById('focus-time');
+                const modeElement = document.getElementById('focus-mode');
+                const sessionsElement = document.getElementById('sessions-completed');
+                
+                timeElement.textContent = focusTimer.formatTime(focusTimer.totalTime - focusTimer.currentTime);
+                modeElement.textContent = focusTimer.mode === 'work' ? '工作时间' : '休息时间';
+                modeElement.className = focusTimer.mode === 'work' ? 'focus-mode work-mode' : 'focus-mode break-mode';
+                sessionsElement.textContent = focusTimer.sessionsCompleted;
+                
+                if (focusTimer.isRunning) {
+                    setTimeout(updateFocusDisplay, 1000);
+                }
+            }
+            
+            // 呼吸练习控制
+            document.getElementById('breathing-start').addEventListener('click', () => {
+                breathingExercise.start();
+                updateBreathingDisplay();
+            });
+            
+            document.getElementById('breathing-stop').addEventListener('click', () => {
+                breathingExercise.stop();
+                document.getElementById('breathing-phase').textContent = '吸气';
+                document.getElementById('breathing-circle').style.borderColor = '#4CAF50';
+                document.getElementById('breathing-circle').style.animation = 'breathing 4s ease-in-out infinite';
+            });
+            
+            // 更新呼吸显示
+            function updateBreathingDisplay() {
+                const phaseElement = document.getElementById('breathing-phase');
+                const circleElement = document.getElementById('breathing-circle');
+                
+                phaseElement.textContent = breathingExercise.getPhaseText();
+                circleElement.style.borderColor = breathingExercise.getPhaseColor();
+                
+                // 调整动画时长
+                const duration = breathingExercise.getPhaseDuration();
+                circleElement.style.animation = `breathing ${duration}s ease-in-out infinite`;
+                
+                if (breathingExercise.isRunning) {
+                    setTimeout(updateBreathingDisplay, 100);
+                }
+            }
+            
+            // 关键：用户手势激活音频（iOS 后台播放必需）
+            document.body.addEventListener('touchstart', function() {
+                if (selectedSounds.length > 0) {
+                    selectedSounds.forEach(sound => {
+                        audioManager.playSound(sound);
+                    });
+                }
+            }, { once: true });
+            
+            console.log('WhiteNoise Pro PWA 已加载，支持后台音频播放！');
+        });
+    </script>
+</body>
+</html>
