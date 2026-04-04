@@ -1,4 +1,4 @@
-/* WhiteNoise Pro - PWA 样式 */
+﻿/* WhiteNoise Pro - PWA 样式 */
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +7,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #8b5cf6 0%, #8b5cf6 100%);
     min-height: 100vh;
     color: #333;
 }
@@ -18,10 +18,10 @@ body {
     padding: 20px;
 }
 
-/* 标签页导航 */
+/* 标签页导�?*/
 .tab-nav {
     display: flex;
-    background: white;
+    background: #0f172a; color: white;
     border-radius: 20px;
     padding: 8px;
     margin-bottom: 20px;
@@ -42,7 +42,7 @@ body {
 }
 
 .tab-button.active {
-    background: #667eea;
+    background: #8b5cf6;
     color: white;
 }
 
@@ -65,7 +65,7 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 白噪音控制 */
+/* 白噪音控�?*/
 .sound-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -74,7 +74,7 @@ body {
 }
 
 .sound-card {
-    background: white;
+    background: #0f172a; color: white;
     border-radius: 16px;
     padding: 20px 10px;
     text-align: center;
@@ -90,13 +90,13 @@ body {
 
 .sound-card.selected {
     background: #e8eaf6;
-    border: 2px solid #667eea;
+    border: 2px solid #8b5cf6;
 }
 
 .sound-icon {
     font-size: 32px;
     margin-bottom: 10px;
-    color: #667eea;
+    color: #8b5cf6;
 }
 
 .sound-name {
@@ -206,8 +206,8 @@ body {
 }
 
 .duration-btn.active {
-    background: white;
-    color: #667eea;
+    background: #0f172a; color: white;
+    color: #8b5cf6;
 }
 
 /* 呼吸练习 */
@@ -240,7 +240,7 @@ body {
     margin-top: 20px;
 }
 
-/* 响应式设计 */
+/* 响应式设�?*/
 @media (max-width: 600px) {
     .container {
         padding: 15px;
@@ -264,3 +264,8 @@ body {
         height: 150px;
     }
 }
+
+
+
+
+`n/* WCAG 2.2 Accessibility */`nbutton:focus-visible {`n    outline: 3px solid #8b5cf6;`n    outline-offset: 2px;`n}`n
