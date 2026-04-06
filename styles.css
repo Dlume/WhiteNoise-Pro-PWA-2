@@ -1,4 +1,4 @@
-/* WhiteNoise Pro PWA - 完整样式表 */
+/* WhiteNoise Pro PWA v3.0 - 完整样式表 */
 * {
     margin: 0;
     padding: 0;
@@ -9,18 +9,21 @@
     --primary-color: #8b5cf6;
     --primary-dark: #7c3aed;
     --primary-light: #a78bfa;
-    --background-dark: #0f172a;
-    --background-card: rgba(255, 255, 255, 0.1);
+    --background-dark: #0f0f23;
+    --background-card: rgba(255, 255, 255, 0.08);
+    --background-card-hover: rgba(255, 255, 255, 0.12);
     --text-white: #ffffff;
     --text-gray: #94a3b8;
     --success: #22c55e;
     --warning: #fbbf24;
     --danger: #ef4444;
+    --border-radius: 24px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
     min-height: 100vh;
     color: var(--text-white);
     -webkit-font-smoothing: antialiased;
@@ -35,21 +38,24 @@ body {
 
 /* ==================== 标签页导航 ==================== */
 .tab-nav {
-    display: flex;
-    background: var(--background-dark);
-    border-radius: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
     padding: 8px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow);
 }
 
 .tab-button {
-    flex: 1;
-    padding: 12px 16px;
+    padding: 12px 8px;
     border: none;
     background: none;
     border-radius: 16px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text-gray);
     cursor: pointer;
@@ -57,12 +63,13 @@ body {
 }
 
 .tab-button.active {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--text-white);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 
 .tab-button:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--background-card);
     color: var(--text-white);
 }
 
@@ -87,6 +94,18 @@ body {
     }
 }
 
+/* ==================== 页面标题 ==================== */
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--text-white), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 /* ==================== 播放控制 ==================== */
 .playback-controls {
     display: flex;
@@ -96,43 +115,58 @@ body {
 }
 
 .control-btn {
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     border: none;
-    font-size: 24px;
+    font-size: 28px;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .play-btn {
-    background: var(--success);
+    background: linear-gradient(135deg, var(--success), #16a34a);
     color: white;
 }
 
 .play-btn:hover {
-    background: #16a34a;
-    transform: scale(1.05);
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
 }
 
 .stop-btn {
-    background: var(--danger);
+    background: linear-gradient(135deg, var(--danger), #dc2626);
     color: white;
 }
 
 .stop-btn:hover {
-    background: #dc2626;
-    transform: scale(1.05);
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* ==================== 睡眠定时器显示 ==================== */
+.sleep-timer-display {
+    text-align: center;
+    padding: 12px 20px;
+    background: var(--background-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-light);
+    border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
 /* ==================== 音效网格 ==================== */
 .sound-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 16px;
     margin-bottom: 24px;
 }
@@ -141,8 +175,8 @@ body {
     background: var(--background-card);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 24px 16px;
+    border-radius: var(--border-radius);
+    padding: 20px 16px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -169,12 +203,13 @@ body {
 
 .sound-card:hover {
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    background: var(--background-card-hover);
 }
 
 .sound-card.active {
     border-color: var(--card-color);
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(139, 92, 246, 0.15);
     box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
 }
 
@@ -183,16 +218,31 @@ body {
     transform: scale(1);
 }
 
+.sound-card.active .sound-icon {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
 .sound-icon {
     font-size: 48px;
     margin-bottom: 8px;
     display: block;
+    transition: transform 0.3s ease;
 }
 
 .sound-name {
     font-size: 15px;
     font-weight: 600;
     color: var(--text-white);
+    margin-bottom: 12px;
 }
 
 .sound-indicator {
@@ -207,6 +257,62 @@ body {
     transform: scale(0);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 0 12px var(--success);
+}
+
+/* ==================== 音量控制 ==================== */
+.volume-control {
+    margin-top: 8px;
+}
+
+.volume-slider {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    background: var(--text-white);
+    transform: scale(1.2);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.volume-slider::-moz-range-thumb:hover {
+    background: var(--text-white);
+    transform: scale(1.2);
+}
+
+.volume-value {
+    display: block;
+    font-size: 12px;
+    color: var(--text-gray);
+    margin-top: 4px;
 }
 
 /* ==================== 使用提示 ==================== */
@@ -225,186 +331,70 @@ body {
     color: var(--text-gray);
 }
 
-/* ==================== 专注模式 ==================== */
-.focus-display {
+/* ==================== 定时关闭 ==================== */
+.sleep-timer-container {
     text-align: center;
-    padding: 40px 20px;
-    background: var(--background-card);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 24px;
-    margin-bottom: 24px;
 }
 
-.focus-time {
-    font-size: 72px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    margin-bottom: 12px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.focus-mode {
-    display: inline-block;
-    padding: 8px 20px;
-    background: var(--primary-color);
-    border-radius: 20px;
+.sleep-timer-description {
     font-size: 16px;
-    font-weight: 600;
-}
-
-.work-mode {
-    background: var(--primary-color);
-}
-
-.break-mode {
-    background: var(--success);
-}
-
-.duration-selector {
+    color: var(--text-gray);
     margin-bottom: 24px;
 }
 
-.duration-options {
-    display: flex;
+.timer-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
+    margin-bottom: 32px;
 }
 
-.duration-btn {
-    padding: 12px 24px;
+.timer-btn {
     background: var(--background-card);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 2px solid transparent;
-    border-radius: 16px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-white);
+    border-radius: 20px;
+    padding: 20px 16px;
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.duration-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.duration-btn.active {
-    background: var(--primary-color);
-    border-color: var(--primary-light);
-}
-
-.focus-controls {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
-    justify-content: center;
-    margin-bottom: 24px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
-.focus-info {
-    background: var(--background-card);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 16px 20px;
-    text-align: center;
+.timer-btn:hover {
+    background: var(--background-card-hover);
+    transform: translateY(-2px);
 }
 
-.focus-info p {
-    margin: 8px 0;
+.timer-btn.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border-color: var(--primary-light);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.timer-btn.timer-cancel {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.timer-btn.timer-cancel:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.timer-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-white);
+}
+
+.timer-label {
     font-size: 14px;
     color: var(--text-gray);
 }
 
-/* ==================== 呼吸练习 ==================== */
-.breathing-container {
-    text-align: center;
-}
-
-.breathing-visual {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 32px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.breathing-circle {
-    width: 100px;
-    height: 100px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
-}
-
-.breathing-visual.inhale .breathing-circle {
-    animation: inhale 4s ease-in-out forwards;
-}
-
-.breathing-visual.hold .breathing-circle {
-    animation: hold 7s ease-in-out forwards;
-}
-
-.breathing-visual.exhale .breathing-circle {
-    animation: exhale 8s ease-in-out forwards;
-}
-
-@keyframes inhale {
-    0% {
-        transform: scale(1);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(2);
-        opacity: 1;
-    }
-}
-
-@keyframes hold {
-    0%, 100% {
-        transform: scale(2);
-        opacity: 1;
-    }
-}
-
-@keyframes exhale {
-    0% {
-        transform: scale(2);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.7;
-    }
-}
-
-.breathing-info {
-    margin-bottom: 32px;
-}
-
-.breathing-phase {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--text-white);
-}
-
-.breathing-instruction {
-    font-size: 16px;
-    color: var(--text-gray);
-    margin-bottom: 24px;
-}
-
-.breathing-controls {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 32px;
-}
-
-.breathing-method {
+.sleep-info {
     background: var(--background-card);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -413,29 +403,353 @@ body {
     text-align: left;
 }
 
-.breathing-method h3 {
+.sleep-info h3 {
     font-size: 18px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     color: var(--text-white);
 }
 
-.breathing-method ul {
+.sleep-info ul {
     list-style: none;
 }
 
-.breathing-method li {
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 15px;
+.sleep-info li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--text-gray);
+    padding-left: 20px;
+    position: relative;
+}
+
+.sleep-info li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: 700;
+}
+
+/* ==================== 闹钟 ==================== */
+.alarm-container {
+    text-align: center;
+}
+
+.alarm-time-picker,
+.alarm-sound-selector {
+    background: var(--background-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.time-picker-label,
+.sound-selector-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 12px;
+}
+
+.time-selectors {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.time-select {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-white);
+    cursor: pointer;
+    outline: none;
+}
+
+.time-select:focus {
+    border-color: var(--primary-color);
+}
+
+.time-separator {
+    font-size: 24px;
+    font-weight: 700;
     color: var(--text-gray);
 }
 
-.breathing-method li:last-child {
-    border-bottom: none;
+.sound-select {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-white);
+    cursor: pointer;
+    outline: none;
 }
 
-.breathing-method strong {
+.sound-select:focus {
+    border-color: var(--primary-color);
+}
+
+.alarm-set-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border: none;
+    border-radius: 16px;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.alarm-set-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+.alarm-status {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid var(--primary-color);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.alarm-countdown {
+    font-size: 18px;
+    font-weight: 700;
     color: var(--primary-light);
+    margin-bottom: 16px;
+}
+
+.alarm-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.alarm-snooze-btn,
+.alarm-cancel-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.alarm-snooze-btn {
+    background: var(--warning);
+    color: #000;
+}
+
+.alarm-snooze-btn:hover {
+    background: #f59e0b;
+}
+
+.alarm-cancel-btn {
+    background: var(--danger);
+    color: white;
+}
+
+.alarm-cancel-btn:hover {
+    background: #dc2626;
+}
+
+.alarm-info {
+    background: var(--background-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.alarm-info h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--text-white);
+}
+
+.alarm-info ul {
+    list-style: none;
+}
+
+.alarm-info li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--text-gray);
+    padding-left: 20px;
+    position: relative;
+}
+
+.alarm-info li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: 700;
+}
+
+/* ==================== 预设 ==================== */
+.presets-container {
+    text-align: center;
+}
+
+.save-preset-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border: none;
+    border-radius: 16px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    margin-bottom: 24px;
+}
+
+.save-preset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+.presets-list {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.preset-card {
+    background: var(--background-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.preset-card:hover {
+    border-color: var(--primary-color);
+    background: var(--background-card-hover);
+}
+
+.preset-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.preset-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-white);
+}
+
+.preset-date {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.preset-sounds {
+    font-size: 14px;
+    color: var(--text-gray);
+    margin-bottom: 12px;
+}
+
+.preset-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.preset-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.preset-btn.load {
+    background: var(--success);
+    color: white;
+}
+
+.preset-btn.load:hover {
+    background: #16a34a;
+}
+
+.preset-btn.delete {
+    background: var(--danger);
+    color: white;
+}
+
+.preset-btn.delete:hover {
+    background: #dc2626;
+}
+
+.no-presets {
+    color: var(--text-gray);
+    font-size: 14px;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.presets-info {
+    background: var(--background-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+}
+
+.presets-info h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--text-white);
+}
+
+.presets-info ul {
+    list-style: none;
+}
+
+.presets-info li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--text-gray);
+    padding-left: 20px;
+    position: relative;
+}
+
+.presets-info li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: 700;
 }
 
 /* ==================== 响应式设计 ==================== */
@@ -444,31 +758,35 @@ body {
         padding: 16px;
     }
 
+    .tab-nav {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .sound-grid {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
         gap: 12px;
     }
 
     .sound-card {
-        padding: 20px 12px;
+        padding: 16px 12px;
     }
 
     .sound-icon {
         font-size: 40px;
     }
 
-    .focus-time {
-        font-size: 56px;
+    .timer-options {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .breathing-visual {
-        width: 160px;
-        height: 160px;
+    .alarm-actions {
+        flex-direction: column;
     }
 
-    .breathing-circle {
-        width: 80px;
-        height: 80px;
+    .control-btn {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
     }
 }
 
@@ -483,17 +801,19 @@ body {
 
 /* 焦点指示器 - WCAG 2.2 合规 */
 .tab-button:focus-visible,
-.duration-btn:focus-visible,
+.timer-btn:focus-visible,
 .control-btn:focus-visible,
-.sound-card:focus-visible {
+.sound-card:focus-visible,
+.preset-btn:focus-visible {
     outline: 3px solid var(--text-white);
     outline-offset: 2px;
 }
 
 /* 触摸友好尺寸 - 最小 44x44px */
 .tab-button,
-.duration-btn,
+.timer-btn,
 .control-btn,
-.sound-card {
+.sound-card,
+.preset-btn {
     min-height: 44px;
 }
